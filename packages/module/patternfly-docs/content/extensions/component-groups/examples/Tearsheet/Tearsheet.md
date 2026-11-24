@@ -56,7 +56,8 @@ An overlay outside this stack is not considered when choosing which entry handle
 
 ### Covering the masthead
 
-By default, tearsheets reserve a `4rem` gap above the base sheet for the masthead. Set `coverMasthead` to extend the base
+By default, tearsheets reserve a `4rem` gap above the base sheet for the masthead and retain widths of `calc(100% - 4rem)`
+at stack level 0, `calc(100% - 2rem)` at level 1, and `100%` at level 2. Set `coverMasthead` to extend the base
 tearsheet over the masthead while keeping a top gap equal to its left and right gaps. These insets follow the PatternFly
 page-chrome spacing token.
 

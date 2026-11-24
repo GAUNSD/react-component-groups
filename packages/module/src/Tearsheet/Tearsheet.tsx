@@ -47,9 +47,10 @@ export function createStackEscapeHandler(entries: readonly StackEscapeEntry[]): 
 const useStyles = createUseStyles({
   tearsheet: {
     '--tearsheet-inset-block-start': '4rem',
+    '--tearsheet-inset-inline': '2rem',
     '--tearsheet-stack-offset': '0px',
-    width: `calc(100% - ${pageChromeInset.var} * 2) !important`,
-    maxWidth: `calc(100% - ${pageChromeInset.var} * 2) !important`,
+    width: 'calc(100% - var(--tearsheet-inset-inline) * 2) !important',
+    maxWidth: 'calc(100% - var(--tearsheet-inset-inline) * 2) !important',
     height: 'calc(100% - var(--tearsheet-inset-block-start) - var(--tearsheet-stack-offset)) !important',
     maxHeight: 'calc(100% - var(--tearsheet-inset-block-start) - var(--tearsheet-stack-offset)) !important',
     insetBlockStart: 'auto !important',
@@ -58,6 +59,7 @@ const useStyles = createUseStyles({
     borderBottomRightRadius: '0',
     '&.pf-m-cover-masthead': {
       '--tearsheet-inset-block-start': pageChromeInset.var,
+      '--tearsheet-inset-inline': pageChromeInset.var,
     },
     '&.pf-v6-c-modal-animated': {
       '--pf-v6-c-modal-animated--Transition':
@@ -69,8 +71,8 @@ const useStyles = createUseStyles({
     },
     '&.pf-m-stack-level-1': {
       '--tearsheet-stack-offset': '2rem',
-      width: `calc(100% - ${pageChromeInset.var}) !important`,
-      maxWidth: `calc(100% - ${pageChromeInset.var}) !important`,
+      width: 'calc(100% - var(--tearsheet-inset-inline)) !important',
+      maxWidth: 'calc(100% - var(--tearsheet-inset-inline)) !important',
     },
     '&.pf-m-stack-level-2': {
       '--tearsheet-stack-offset': '4rem',
