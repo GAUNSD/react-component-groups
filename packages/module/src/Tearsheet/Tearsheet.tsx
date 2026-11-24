@@ -7,7 +7,9 @@ import pageChromeInset from '@patternfly/react-tokens/dist/esm/t_global_spacer_i
 export interface StackEscapeEntry {
   /** Whether this overlay currently participates in the stack. */
   isOpen: boolean;
-  /** Handles Escape when this entry is the topmost open overlay. */
+  /** Handles Escape when this entry is the topmost open overlay. The callback must
+   * update the overlay's open state to close it; PatternFly Modal does not call
+   * onClose on Escape when onEscapePress is provided. */
   onEscapePress: (event: KeyboardEvent) => void;
 }
 
@@ -106,7 +108,8 @@ export interface TearsheetProps extends HTMLProps<HTMLDivElement> {
   stackLevel?: number;
   /** A callback for when the close button is clicked. This prop needs to be passed to render the close button. */
   onClose?: (event: KeyboardEvent | MouseEvent) => void;
-  /** A callback for when the tearsheet is closed via the escape key. */
+  /** Handles the Escape key instead of onClose. When provided, this callback must
+   * update isOpen to close the tearsheet; onClose is not also called on Escape. */
   onEscapePress?: (event: KeyboardEvent) => void;
   /** The parent container to append the tearsheet to. Defaults to document.body. */
   appendTo?: HTMLElement | (() => HTMLElement);
