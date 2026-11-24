@@ -101,8 +101,10 @@ export interface TearsheetProps extends HTMLProps<HTMLDivElement> {
   className?: string;
   /** Flag to show the tearsheet. */
   isOpen?: boolean;
-  /** Allow the tearsheet to cover the masthead with a top inset matching the base sheet's side insets.
-   * Stacked tearsheets retain their vertical offsets. Defaults to false. */
+  /** Use the PatternFly page-chrome spacing token for the base sheet's top and side insets,
+   * allowing it to cover the masthead. Stacked tearsheets retain their vertical offsets.
+   * Defaults to false: the top inset is 4rem, and widths at stack levels 0, 1, and 2
+   * are calc(100% - 4rem), calc(100% - 2rem), and 100%, respectively. */
   coverMasthead?: boolean;
   /** Visual stack level of the tearsheet. Managed automatically by TearsheetGroup.
    * When used standalone: 0 (back), 1 (middle), 2 (front).

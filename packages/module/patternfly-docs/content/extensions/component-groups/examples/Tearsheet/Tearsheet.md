@@ -10,7 +10,7 @@ sourceLink: https://github.com/patternfly/react-component-groups/blob/main/packa
 import { Fragment, useState } from 'react';
 import spacing from '@patternfly/react-styles/css/utilities/Spacing/spacing';
 import TearsheetGroup from '@patternfly/react-component-groups/dist/dynamic/TearsheetGroup';
-import Tearsheet, { createStackEscapeHandler } from '@patternfly/react-component-groups/dist/dynamic/Tearsheet';
+import Tearsheet from '@patternfly/react-component-groups/dist/dynamic/Tearsheet';
 import TearsheetHeader from '@patternfly/react-component-groups/dist/dynamic/TearsheetHeader';
 import TearsheetBody from '@patternfly/react-component-groups/dist/dynamic/TearsheetBody';
 import TearsheetFooter from '@patternfly/react-component-groups/dist/dynamic/TearsheetFooter';
@@ -37,32 +37,16 @@ The `<TearsheetBody>` component will handle scrolling for long content.
 
 ### Stacked
 
-Tearsheets support stacking, allowing new sheets to open on top of active ones. They utilize three visible stack levels (0, 1, and 2) and a background level (-1) to hide inactive sheets.
+Use `TearsheetGroup` to manage stack levels, focus trapping, and Escape handling. Open sheets stack in child order, from back to front. See [Escape handling](#escape-handling) for callback behavior and limitations.
 
-Limit stacked tearsheets to a maximum of 3. Flows requiring 4 or more levels should be redesigned using multi-step wizard or dedicates page to prevent loss of user context.
-
-Wrap stacked tearsheets in `TearsheetGroup` to manage their stack levels, focus trapping, and Escape handling automatically. Child order determines stacking priority, from back to front. Escape calls only the last open sheet's `onEscapePress` callback, or its `onClose` callback when `onEscapePress` is not provided. Earlier sheets do not handle that event, even when the top sheet's callback keeps it open or the top sheet has no callback.
-
-Providing `onEscapePress` replaces the underlying PatternFly Modal's `onClose` handling for Escape. The Escape callback is responsible for closing the overlay by updating its open state, such as setting `isOpen` to `false`; `onClose` is not also called. This applies to standalone tearsheets, sheets in `TearsheetGroup`, and callbacks supplied to `createStackEscapeHandler`. A callback that does not update the open state leaves the overlay open when Escape is pressed.
-
-For standalone tearsheets or stacks that also include modals, use `createStackEscapeHandler` to coordinate Escape handling explicitly. During render, provide entries containing each overlay's current `isOpen` state and `onEscapePress` callback, ordered from back to front. Pass the returned handler to every participating overlay's `onEscapePress` prop. Only the last open entry handles Escape, even when its callback keeps the overlay open.
-
-Both `TearsheetGroup` and the explicit handler call `stopImmediatePropagation()` to prevent participating overlays from handling the same Escape event more than once. This also blocks any document-level `keydown` listener registered after the earliest participating modal's listener, including listeners for popovers, tooltips, and third-party Escape handling.
-
-An overlay outside this stack is not considered when choosing which entry handles Escape. If a non-participating overlay, such as a separate Modal, appears above the stack, Escape can dismiss the topmost participating tearsheet and swallow the event before the visually topmost overlay receives it. The outcome depends on listener registration (mount) order. Include overlays that need coordinated Escape handling in the same handler's entries and pass that handler to each overlay.
+Limit stacks to 3 visible tearsheets. For deeper flows, use a multi-step wizard or dedicated page.
 
 ```ts file="./TearsheetStacked.tsx"
 ```
 
 ### Covering the masthead
 
-By default, tearsheets reserve a `4rem` gap above the base sheet for the masthead and retain widths of `calc(100% - 4rem)`
-at stack level 0, `calc(100% - 2rem)` at level 1, and `100%` at level 2. Set `coverMasthead` to extend the base
-tearsheet over the masthead while keeping a top gap equal to its left and right gaps. These insets follow the PatternFly
-page-chrome spacing token.
-
-This example uses the same three layers as the stacked example above, with `coverMasthead` enabled on each sheet.
-The vertical offsets between sheets are preserved so you can compare the additional vertical space at each level.
+Set `coverMasthead` to extend the base sheet over the masthead, using the PatternFly page-chrome token for its top and side insets. Stacked sheets retain their vertical offsets. When omitted or false, existing dimensions are preserved.
 
 ```ts file="./TearsheetCoverMasthead.tsx"
 ```
@@ -73,3 +57,14 @@ Choose a tearsheet over a modal when users need to process detailed and complex 
 
 ```ts file="./TearsheetComparison.tsx"
 ```
+
+## Escape handling
+
+In `TearsheetGroup`, Escape calls only the topmost open sheet's `onEscapePress`, falling back to `onClose`. A supplied `onEscapePress` must update the open state to close the sheet; `onClose` is not also called. Earlier sheets stay open even if the top sheet has no callback or stays open.
+
+For standalone tearsheets or mixed Modal stacks, call `createStackEscapeHandler` during render with each overlay's current `isOpen` and `onEscapePress`, ordered back to front. Pass the returned handler to every overlay's `onEscapePress`; only the last open entry runs, and its callback controls dismissal.
+
+Both approaches use `stopImmediatePropagation()`:
+
+- Document-level `keydown` listeners registered after the earliest participating modal's listener are blocked, including popover, tooltip, and third-party Escape handlers.
+- An overlay outside the stack may sit above it, yet Escape can dismiss the topmost participating sheet and be swallowed before reaching that overlay. Behavior depends on listener registration (mount) order; include overlays needing coordinated Escape handling in the shared handler.
