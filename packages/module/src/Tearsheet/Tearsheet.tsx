@@ -16,6 +16,16 @@ export interface StackEscapeEntry {
  * Create the handler during render with current open states and callbacks, and pass it
  * to every participating overlay's onEscapePress prop. Only the last open entry handles
  * Escape, even if its callback does not dismiss the overlay.
+ *
+ * Calls stopImmediatePropagation(), blocking any document-level keydown listener registered
+ * after the earliest participating modal's listener, including popovers, tooltips, and
+ * third-party Escape handling.
+ *
+ * Overlays outside this stack are not considered. If a non-participating overlay is
+ * visually on top, Escape can dismiss the topmost participating tearsheet and swallow
+ * the event before that overlay receives it. The outcome depends on listener registration
+ * (mount) order. Include overlays that need coordinated Escape handling in the same
+ * entries and pass this handler to each overlay.
  */
 export function createStackEscapeHandler(entries: readonly StackEscapeEntry[]): (event: KeyboardEvent) => void {
   return (event) => {
