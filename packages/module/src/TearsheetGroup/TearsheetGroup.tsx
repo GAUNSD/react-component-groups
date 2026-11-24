@@ -1,12 +1,13 @@
 import { Children, cloneElement, isValidElement, useId, useRef, type FunctionComponent, type ReactElement } from 'react';
-import Tearsheet, { type TearsheetProps } from '../Tearsheet';
+import Tearsheet, { createStackEscapeHandler, type StackEscapeEntry, type TearsheetProps } from '../Tearsheet';
 
 const MAX_VISIBLE_LEVELS = 3;
 
 export interface TearsheetGroupProps {
   /** Set of Tearsheets to render inside the group. Render order determines stacking
    * priority — later children stack in front of earlier ones. Only Tearsheets with
-   * isOpen={true} participate in the visual stack. */
+   * isOpen={true} participate in the visual stack. Escape calls only the topmost open
+   * sheet's onEscapePress, falling back to onClose when no Escape callback is provided. */
   children?: React.ReactNode;
   /** Additional classes added to the Tearsheet group. */
   className?: string;
@@ -27,12 +28,21 @@ const TearsheetGroup: FunctionComponent<TearsheetGroupProps> = ({
   const prevLevelsRef = useRef<Map<number, number>>(new Map());
 
   const openIndices: number[] = [];
+  const escapeEntries: StackEscapeEntry[] = [];
   Children.forEach(children, (child, index) => {
-    if (isValidElement(child) && child.type === Tearsheet && (child.props as TearsheetProps).isOpen) {
-      openIndices.push(index);
+    if (isValidElement(child) && child.type === Tearsheet) {
+      const { isOpen = false, onEscapePress, onClose } = child.props as TearsheetProps;
+      escapeEntries.push({
+        isOpen,
+        onEscapePress: (event) => (onEscapePress ?? onClose)?.(event)
+      });
+      if (isOpen) {
+        openIndices.push(index);
+      }
     }
   });
 
+  const onEscapePress = createStackEscapeHandler(escapeEntries);
   const totalOpen = openIndices.length;
   const hiddenThreshold = Math.max(0, totalOpen - MAX_VISIBLE_LEVELS);
 
@@ -53,7 +63,8 @@ const TearsheetGroup: FunctionComponent<TearsheetGroupProps> = ({
       // animation when the tearsheet does open.
       const level = prevLevelsRef.current.get(index) ?? Math.min(totalOpen, MAX_VISIBLE_LEVELS - 1);
       return cloneElement<TearsheetProps>(child as ReactElement<TearsheetProps>, {
-        stackLevel: level
+        stackLevel: level,
+        onEscapePress
       });
     }
 
@@ -66,6 +77,7 @@ const TearsheetGroup: FunctionComponent<TearsheetGroupProps> = ({
 
     return cloneElement<TearsheetProps>(child as ReactElement<TearsheetProps>, {
       stackLevel,
+      onEscapePress,
       modalProps: { disableFocusTrap: !isFrontmost }
     });
   });

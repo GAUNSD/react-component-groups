@@ -41,9 +41,11 @@ Tearsheets support stacking, allowing new sheets to open on top of active ones. 
 
 Limit stacked tearsheets to a maximum of 3. Flows requiring 4 or more levels should be redesigned using multi-step wizard or dedicates page to prevent loss of user context.
 
-Use `createStackEscapeHandler` to coordinate Escape handling across stacked tearsheets and modals. During render, provide entries containing each overlay's current `isOpen` state and `onEscapePress` callback, ordered from back to front. Pass the returned handler to every participating overlay's `onEscapePress` prop. Only the last open entry handles Escape, even when its callback keeps the overlay open.
+Wrap stacked tearsheets in `TearsheetGroup` to manage their stack levels, focus trapping, and Escape handling automatically. Child order determines stacking priority, from back to front. Escape calls only the last open sheet's `onEscapePress` callback, or its `onClose` callback when `onEscapePress` is not provided. Earlier sheets do not handle that event, even when the top sheet's callback keeps it open or the top sheet has no callback.
 
-The handler calls `stopImmediatePropagation()` to prevent participating overlays from handling the same Escape event more than once. This also blocks any document-level `keydown` listener registered after the earliest participating modal's listener, including listeners for popovers, tooltips, and third-party Escape handling.
+For standalone tearsheets or stacks that also include modals, use `createStackEscapeHandler` to coordinate Escape handling explicitly. During render, provide entries containing each overlay's current `isOpen` state and `onEscapePress` callback, ordered from back to front. Pass the returned handler to every participating overlay's `onEscapePress` prop. Only the last open entry handles Escape, even when its callback keeps the overlay open.
+
+Both `TearsheetGroup` and the explicit handler call `stopImmediatePropagation()` to prevent participating overlays from handling the same Escape event more than once. This also blocks any document-level `keydown` listener registered after the earliest participating modal's listener, including listeners for popovers, tooltips, and third-party Escape handling.
 
 An overlay outside this stack is not considered when choosing which entry handles Escape. If a non-participating overlay, such as a separate Modal, appears above the stack, Escape can dismiss the topmost participating tearsheet and swallow the event before the visually topmost overlay receives it. The outcome depends on listener registration (mount) order. Include overlays that need coordinated Escape handling in the same handler's entries and pass that handler to each overlay.
 

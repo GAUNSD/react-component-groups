@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import { Button } from '@patternfly/react-core';
-import Tearsheet, { createStackEscapeHandler } from '@patternfly/react-component-groups/dist/dynamic/Tearsheet';
+import Tearsheet from '@patternfly/react-component-groups/dist/dynamic/Tearsheet';
+import TearsheetGroup from '@patternfly/react-component-groups/dist/dynamic/TearsheetGroup';
 import TearsheetHeader from '@patternfly/react-component-groups/dist/dynamic/TearsheetHeader';
 import TearsheetBody from '@patternfly/react-component-groups/dist/dynamic/TearsheetBody';
 import TearsheetFooter from '@patternfly/react-component-groups/dist/dynamic/TearsheetFooter';
@@ -20,98 +21,88 @@ export const TearsheetCoverMasthead: React.FunctionComponent = () => {
     setIsStack2TearsheetOpen(!isStack2TearsheetOpen);
   };
 
-  // Declare overlays from back to front and share the handler with each one.
-  const onEscapePress = createStackEscapeHandler([
-    { isOpen: isTearsheetOpen, onEscapePress: toggleTearsheet },
-    { isOpen: isStack1TearsheetOpen, onEscapePress: toggleStack1Tearsheet },
-    { isOpen: isStack2TearsheetOpen, onEscapePress: toggleStack2Tearsheet }
-  ]);
-
   return (
     <Fragment>
       <Button variant="primary" onClick={toggleTearsheet}>
         Show Tearsheet covering masthead
       </Button>
-      <Tearsheet
-        coverMasthead
-        aria-labelledby="cover-masthead-title-0"
-        onEscapePress={onEscapePress}
-        isOpen={isTearsheetOpen}
-        onClose={(e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => toggleTearsheet(e)}
-      >
-        <TearsheetHeader title="Tearsheet Header (stack 0)" labelId="cover-masthead-title-0" />
-        <TearsheetBody>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </TearsheetBody>
-        <TearsheetFooter>
-          <Button key="confirm" variant="primary" onClick={toggleTearsheet}>
-            Confirm
-          </Button>
-          <Button variant="secondary" onClick={toggleStack1Tearsheet}>
-            Show Tearsheet (stacked 1)
-          </Button>
-          <Button key="cancel" variant="link" onClick={toggleTearsheet}>
-            Cancel
-          </Button>
-        </TearsheetFooter>
-      </Tearsheet>
-      <Tearsheet
-        coverMasthead
-        aria-labelledby="cover-masthead-title-1"
-        onEscapePress={onEscapePress}
-        isOpen={isStack1TearsheetOpen}
-        stackLevel={1}
-        onClose={(e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => toggleStack1Tearsheet(e)}
-      >
-        <TearsheetHeader title="Tearsheet Header (stack 1)" labelId="cover-masthead-title-1" />
-        <TearsheetBody>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </TearsheetBody>
-        <TearsheetFooter>
-          <Button key="confirm" variant="primary" onClick={toggleStack1Tearsheet}>
-            Confirm
-          </Button>
-          <Button variant="secondary" onClick={toggleStack2Tearsheet}>
-            Show Tearsheet (stacked 2)
-          </Button>
-          <Button key="cancel" variant="link" onClick={toggleStack1Tearsheet}>
-            Cancel
-          </Button>
-        </TearsheetFooter>
-      </Tearsheet>
-      <Tearsheet
-        coverMasthead
-        aria-labelledby="cover-masthead-title-2"
-        onEscapePress={onEscapePress}
-        isOpen={isStack2TearsheetOpen}
-        stackLevel={2}
-        onClose={(e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => toggleStack2Tearsheet(e)}
-      >
-        <TearsheetHeader title="Tearsheet Header (stack 2)" labelId="cover-masthead-title-2" />
-        <TearsheetBody>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </TearsheetBody>
-        <TearsheetFooter>
-          <Button key="confirm" variant="primary" onClick={toggleStack2Tearsheet}>
-            Confirm
-          </Button>
-          <Button key="cancel" variant="link" onClick={toggleStack2Tearsheet}>
-            Cancel
-          </Button>
-        </TearsheetFooter>
-      </Tearsheet>
+      <TearsheetGroup>
+        <Tearsheet
+          coverMasthead
+          aria-labelledby="cover-masthead-title-0"
+          isOpen={isTearsheetOpen}
+          onClose={(e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => toggleTearsheet(e)}
+        >
+          <TearsheetHeader title="Tearsheet Header (stack 0)" labelId="cover-masthead-title-0" />
+          <TearsheetBody>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+            est laborum.
+          </TearsheetBody>
+          <TearsheetFooter>
+            <Button key="confirm" variant="primary" onClick={toggleTearsheet}>
+              Confirm
+            </Button>
+            <Button variant="secondary" onClick={toggleStack1Tearsheet}>
+              Show Tearsheet (stacked 1)
+            </Button>
+            <Button key="cancel" variant="link" onClick={toggleTearsheet}>
+              Cancel
+            </Button>
+          </TearsheetFooter>
+        </Tearsheet>
+        <Tearsheet
+          coverMasthead
+          aria-labelledby="cover-masthead-title-1"
+          isOpen={isStack1TearsheetOpen}
+          onClose={(e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => toggleStack1Tearsheet(e)}
+        >
+          <TearsheetHeader title="Tearsheet Header (stack 1)" labelId="cover-masthead-title-1" />
+          <TearsheetBody>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+            est laborum.
+          </TearsheetBody>
+          <TearsheetFooter>
+            <Button key="confirm" variant="primary" onClick={toggleStack1Tearsheet}>
+              Confirm
+            </Button>
+            <Button variant="secondary" onClick={toggleStack2Tearsheet}>
+              Show Tearsheet (stacked 2)
+            </Button>
+            <Button key="cancel" variant="link" onClick={toggleStack1Tearsheet}>
+              Cancel
+            </Button>
+          </TearsheetFooter>
+        </Tearsheet>
+        <Tearsheet
+          coverMasthead
+          aria-labelledby="cover-masthead-title-2"
+          isOpen={isStack2TearsheetOpen}
+          onClose={(e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => toggleStack2Tearsheet(e)}
+        >
+          <TearsheetHeader title="Tearsheet Header (stack 2)" labelId="cover-masthead-title-2" />
+          <TearsheetBody>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+            est laborum.
+          </TearsheetBody>
+          <TearsheetFooter>
+            <Button key="confirm" variant="primary" onClick={toggleStack2Tearsheet}>
+              Confirm
+            </Button>
+            <Button key="cancel" variant="link" onClick={toggleStack2Tearsheet}>
+              Cancel
+            </Button>
+          </TearsheetFooter>
+        </Tearsheet>
+      </TearsheetGroup>
     </Fragment>
   );
 };

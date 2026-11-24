@@ -4,6 +4,7 @@ import TearsheetGroup from './TearsheetGroup';
 
 // Keep closed sheets observable and inspect Group's configuration without Modal behavior.
 jest.mock('../Tearsheet', () => ({
+  ...jest.requireActual('../Tearsheet'),
   __esModule: true,
   default: ({ children, 'aria-label': label, isOpen, stackLevel, modalProps }: TearsheetProps) => (
     <div
