@@ -34,18 +34,18 @@ export function createStackEscapeHandler(entries: readonly StackEscapeEntry[]): 
 
 const useStyles = createUseStyles({
   tearsheet: {
-    '--pf-v6-c-tearsheet--InsetBlockStart': '4rem',
-    '--pf-v6-c-tearsheet--StackOffset': '0px',
+    '--tearsheet-inset-block-start': '4rem',
+    '--tearsheet-stack-offset': '0px',
     width: `calc(100% - ${pageChromeInset.var} * 2) !important`,
     maxWidth: `calc(100% - ${pageChromeInset.var} * 2) !important`,
-    height: 'calc(100% - var(--pf-v6-c-tearsheet--InsetBlockStart) - var(--pf-v6-c-tearsheet--StackOffset)) !important',
-    maxHeight: 'calc(100% - var(--pf-v6-c-tearsheet--InsetBlockStart) - var(--pf-v6-c-tearsheet--StackOffset)) !important',
+    height: 'calc(100% - var(--tearsheet-inset-block-start) - var(--tearsheet-stack-offset)) !important',
+    maxHeight: 'calc(100% - var(--tearsheet-inset-block-start) - var(--tearsheet-stack-offset)) !important',
     insetBlockStart: 'auto !important',
     alignSelf: 'end !important',
     borderBottomLeftRadius: '0',
     borderBottomRightRadius: '0',
     '&.pf-m-cover-masthead': {
-      '--pf-v6-c-tearsheet--InsetBlockStart': pageChromeInset.var,
+      '--tearsheet-inset-block-start': pageChromeInset.var,
     },
     '&.pf-v6-c-modal-animated': {
       '--pf-v6-c-modal-animated--Transition':
@@ -56,12 +56,12 @@ const useStyles = createUseStyles({
         'width 300ms ease, max-width 300ms ease, height 300ms ease, max-height 300ms ease, top 300ms ease, transform 240ms cubic-bezier(0, 0, 0.2, 1), visibility 0ms linear 0ms',
     },
     '&.pf-m-stack-level-1': {
-      '--pf-v6-c-tearsheet--StackOffset': '2rem',
+      '--tearsheet-stack-offset': '2rem',
       width: `calc(100% - ${pageChromeInset.var}) !important`,
       maxWidth: `calc(100% - ${pageChromeInset.var}) !important`,
     },
     '&.pf-m-stack-level-2': {
-      '--pf-v6-c-tearsheet--StackOffset': '4rem',
+      '--tearsheet-stack-offset': '4rem',
       width: '100% !important',
       maxWidth: '100% !important',
     },

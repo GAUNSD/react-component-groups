@@ -47,20 +47,20 @@ describe('Tearsheet component', () => {
       const dialog = screen.getByRole('dialog');
 
       expect(dialog).not.toHaveClass('pf-m-cover-masthead');
-      expect(getComputedStyle(dialog).getPropertyValue('--pf-v6-c-tearsheet--InsetBlockStart')).toBe('4rem');
+      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-block-start')).toBe('4rem');
 
       rerender(renderSheet(true));
 
       expect(dialog).toHaveClass('pf-m-cover-masthead');
-      expect(getComputedStyle(dialog).getPropertyValue('--pf-v6-c-tearsheet--InsetBlockStart')).toBe(pageChromeInset.var);
-      expect(getComputedStyle(dialog).getPropertyValue('--pf-v6-c-tearsheet--StackOffset')).toBe(expectedOffset);
+      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-block-start')).toBe(pageChromeInset.var);
+      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-stack-offset')).toBe(expectedOffset);
       expect(screen.getByText('Settings content').parentElement).not.toHaveAttribute('coverMasthead');
 
       rerender(renderSheet(false));
 
       expect(dialog).not.toHaveClass('pf-m-cover-masthead');
-      expect(getComputedStyle(dialog).getPropertyValue('--pf-v6-c-tearsheet--InsetBlockStart')).toBe('4rem');
-      expect(getComputedStyle(dialog).getPropertyValue('--pf-v6-c-tearsheet--StackOffset')).toBe(expectedOffset);
+      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-block-start')).toBe('4rem');
+      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-stack-offset')).toBe(expectedOffset);
     }
   );
 
