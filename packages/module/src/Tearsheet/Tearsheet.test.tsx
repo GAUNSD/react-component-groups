@@ -36,7 +36,7 @@ describe('Tearsheet component', () => {
   });
 
   it.each([ [ -1, '0px' ], [ 0, '0px' ], [ 1, '2rem' ], [ 2, '4rem' ] ])(
-    'should toggle token-based insets at stack level %i while preserving its stack offset',
+    'should toggle the top inset at stack level %i while preserving token-based side insets and its stack offset',
     (stackLevel, expectedOffset) => {
       const renderSheet = (coverMasthead?: boolean) => (
         <Tearsheet isOpen aria-label="Settings" stackLevel={stackLevel} coverMasthead={coverMasthead}>
@@ -48,7 +48,7 @@ describe('Tearsheet component', () => {
 
       expect(dialog).not.toHaveClass('pf-m-cover-masthead');
       expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-block-start')).toBe('4rem');
-      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-inline')).toBe('2rem');
+      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-inline')).toBe(pageChromeInset.var);
 
       rerender(renderSheet(true));
 
@@ -62,7 +62,7 @@ describe('Tearsheet component', () => {
 
       expect(dialog).not.toHaveClass('pf-m-cover-masthead');
       expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-block-start')).toBe('4rem');
-      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-inline')).toBe('2rem');
+      expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-inset-inline')).toBe(pageChromeInset.var);
       expect(getComputedStyle(dialog).getPropertyValue('--tearsheet-stack-offset')).toBe(expectedOffset);
     }
   );

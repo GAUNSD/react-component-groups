@@ -47,7 +47,7 @@ export function createStackEscapeHandler(entries: readonly StackEscapeEntry[]): 
 const useStyles = createUseStyles({
   tearsheet: {
     '--tearsheet-inset-block-start': '4rem',
-    '--tearsheet-inset-inline': '2rem',
+    '--tearsheet-inset-inline': pageChromeInset.var,
     '--tearsheet-stack-offset': '0px',
     width: 'calc(100% - var(--tearsheet-inset-inline) * 2) !important',
     maxWidth: 'calc(100% - var(--tearsheet-inset-inline) * 2) !important',
@@ -59,7 +59,6 @@ const useStyles = createUseStyles({
     borderBottomRightRadius: '0',
     '&.pf-m-cover-masthead': {
       '--tearsheet-inset-block-start': pageChromeInset.var,
-      '--tearsheet-inset-inline': pageChromeInset.var,
     },
     '&.pf-v6-c-modal-animated': {
       '--pf-v6-c-modal-animated--Transition':
@@ -101,10 +100,9 @@ export interface TearsheetProps extends HTMLProps<HTMLDivElement> {
   className?: string;
   /** Flag to show the tearsheet. */
   isOpen?: boolean;
-  /** Use the PatternFly page-chrome spacing token for the base sheet's top and side insets,
+  /** Use the PatternFly page-chrome spacing token for the base sheet's top inset,
    * allowing it to cover the masthead. Stacked tearsheets retain their vertical offsets.
-   * Defaults to false: the top inset is 4rem, and widths at stack levels 0, 1, and 2
-   * are calc(100% - 4rem), calc(100% - 2rem), and 100%, respectively. */
+   * Defaults to false: the top inset is 4rem. Side insets always use the page-chrome token. */
   coverMasthead?: boolean;
   /** Visual stack level of the tearsheet. Managed automatically by TearsheetGroup.
    * When used standalone: 0 (back), 1 (middle), 2 (front).

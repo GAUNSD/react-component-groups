@@ -46,7 +46,7 @@ Limit stacks to 3 visible tearsheets. For deeper flows, use a multi-step wizard 
 
 ### Covering the masthead
 
-Set `coverMasthead` to extend the base sheet over the masthead, using the PatternFly page-chrome token for its top and side insets. Stacked sheets retain their vertical offsets. When omitted or false, existing dimensions are preserved.
+All tearsheets use the PatternFly page-chrome token for their side insets. Set `coverMasthead` to also use this token for the base sheet's top inset, extending it over the masthead. Stacked sheets retain their vertical offsets. When omitted or false, the top inset is 4rem.
 
 ```ts file="./TearsheetCoverMasthead.tsx"
 ```
